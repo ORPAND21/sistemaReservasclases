@@ -1,20 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-</head>
-<body>
-    <h1>Iniciar sesión</h1>
-    <form>
-        <label for="username">Usuarios</label>
-        <input type="text" id="username" name="username" required >
+<h1>Iniciar sesión</h1>
+<form id="loginForm">
+    <label for="username">Usuarios</label>
+    <input type="text" id="username" name="username" required>
 
-        <label for="passaword">Contraseña</label>
-        <input type="text" id="passaword" name="passaword" required>
-    </form>
-    <button id="sign-up">No tienes cuenta</button>
-    <p id="loginError">Credenciales inválidas</p>
-</body>
-</html>
+    <label for="passaword">Contraseña</label>
+    <input type="text" id="passaword" name="passaword" required>
+    <button type="submit">Iniciar sesión</button>
+</form>
+<button id="sign-up">No tienes cuenta</button>
+<p id="loginError">Credenciales inválidas</p> 

@@ -1,3 +1,3 @@
-// import { renderRouter} from 'router.js';
+import { renderRouter} from './router.js';
 
-// document.addEventListener("load",renderRouter());
+document.addEventListener("load",renderRouter());
