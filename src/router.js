@@ -2,7 +2,7 @@ const routes = {
     "/": "/scr/views/home.html",
     "/login": "/scr/views/login.html",
     "/register": "/scr/views/register.html",
-    "/notFound": "/scr/views/404.html" 
+    "/notFound": "/scr/views/404.html"
 };
 
 export async function renderRouter(){
@@ -31,6 +31,12 @@ export async function renderRouter(){
         const res = await fetch(file)
         const html = await res.text()
         app.innerHTML = html;
+
+        // Delegación de eventos para el botón de cerrar sesión
+        // Adjuntamos el listener al contenedor principal 'app'
+        app.removeEventListener("click", handleAppClick); // Remover cualquier listener anterior para evitar duplicados
+        app.addEventListener("click", handleAppClick);
+
         if(path === "/login"){
             document.getElementById("principal-header")?.setAttribute("hidden",true)
 
@@ -51,48 +57,47 @@ export async function renderRouter(){
                 } else {
                     alert("Credenciales incorrectas")
                 }
-            
+
             })
         }
-
-        
         if (path === "/register") {
-      document.getElementById("registerForm").addEventListener("submit", (e) => {
-        e.preventDefault();
-        const username = document.getElementById("username").value;
-        const password = document.getElementById("password").value;
-        const name = document.getElementById("name").value;
+            document.getElementById("registerForm").addEventListener("submit", (e) => {
+                e.preventDefault();
+                const username = document.getElementById("username").value;
+                const password = document.getElementById("password").value;
+                const name = document.getElementById("name").value;
 
-        const user = { username, password, name };
-        localStorage.setItem("user", JSON.stringify(user));
-        localStorage.setItem("isAuth", true);
-        location.href = "/";
-      });
-    }
+                const user = { username, password, name };
+                localStorage.setItem("user", JSON.stringify(user));
+                localStorage.setItem("isAuth", true);
+                location.href = "/";
+            });
+        }
 
-    if (path === "/") {
-      document.getElementById("principal-header")?.removeAttribute("hidden");
+        if (path === "/") {
+            document.getElementById("principal-header")?.removeAttribute("hidden");
 
-      app.innerHTML += `
-        <div class="text-center mt-4">
-          <h1 class="text-2xl font-bold">¡Hola, ${user?.name || "Usuario"}!</h1>
-        </div>
-        <button id="logOut" class="mt-4 p-2 bg-red-400 rounded">Cerrar sesión</button>
-      `;
-    }
+            app.innerHTML += `
+                <div class="text-center mt-4">
+                    <h1 class="text-2xl font-bold">¡Hola, ${user?.name || "Usuario"}!</h1>
+                </div>
+                <button id="logOut" class="mt-4 p-2 bg-red-400 rounded">Cerrar sesión</button>
+            `;
+            // No necesitamos obtener logOut aquí directamente si usamos delegación
+        }
 
-    const logOut = document.getElementById("logOut");
-    if (logOut) {
-      logOut.addEventListener("click", () => {
-        localStorage.removeItem("user");
-        localStorage.removeItem("isAuth");
-        location.href = "/login";
-      });
-    }
- 
+
     }catch(err) {
         console.log(err)
         app.innerHTML = "<h2>Error al cargar la vista</h2>"}
 
 };
 
+// Función para manejar los clics delegados
+function handleAppClick(e) {
+    if (e.target.id === "logOut") {
+        localStorage.removeItem("user");
+        localStorage.removeItem("isAuth");
+        location.href = "/login";
+    }
+}
